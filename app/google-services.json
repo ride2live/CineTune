@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882618967230",
+    "project_id": "cinetune-2aad9",
+    "storage_bucket": "cinetune-2aad9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882618967230:android:ccc74d7d35ea168a84aaef",
+        "android_client_info": {
+          "package_name": "com.nolwendroid.cinetune"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzqPmF8UbcYk3npdyvqAIKYkK9SdrjpPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
