@@ -26,7 +26,7 @@ android {
         }
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get() // ✅ Используем версию из TOML
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

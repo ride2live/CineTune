@@ -6,11 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun AppNavigation(
-    navController: NavHostController,
-    navigator: AppNavigator,
-    navigationProvider: NavigationProvider // ✅ Получаем через DI
-) {
+fun AppNavigation(navigator: AppNavigator, navController: NavHostController, navigationProvider: NavigationProvider) {
     NavHost(navController, startDestination = Routes.Splash.route) {
         composable(Routes.Splash.route) { navigationProvider.splashScreen(navigator) }
         composable(Routes.Movie.route) { navigationProvider.movieSelectorScreen() }
