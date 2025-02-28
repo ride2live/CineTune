@@ -3,11 +3,8 @@ package com.nolwendroid.di.app
 import android.content.Context
 import android.content.SharedPreferences
 import com.nolwendroid.cinetune.BuildConfig
-import com.nolwendroid.cinetune.navigation.NavigationProviderImpl
 import com.nolwendroid.core.R
-import com.nolwendroid.core.navigation.AppNavigator
-import com.nolwendroid.core.navigation.NavigationProvider
-import dagger.Binds
+import com.nolwendroid.cinetune.navigation.AppNavigator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,12 +42,12 @@ object AppModule {
 
 //    @Provides
 //    @Singleton
-//    fun  provideProvider (): NavigationProvider {
-//        return NavigationProviderImpl()
+//    fun  provideProvider (): MyNavigationProvider {
+//        return MyNavigationProviderImpl()
 //    }
 //    @Binds
 //    @Singleton
-//    abstract fun bindNavigationProvider(impl: NavigationProviderImpl): NavigationProvider
+//    abstract fun bindNavigationProvider(impl: MyNavigationProviderImpl): MyNavigationProvider
 
 
 }

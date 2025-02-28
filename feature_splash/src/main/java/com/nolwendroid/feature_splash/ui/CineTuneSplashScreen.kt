@@ -10,7 +10,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import com.nolwendroid.core.navigation.AppNavigator
 import com.nolwendroid.feature_splash.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

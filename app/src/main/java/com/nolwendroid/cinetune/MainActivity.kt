@@ -10,9 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.nolwendroid.cinetune.ui.theme.CineTuneTheme
-import com.nolwendroid.core.navigation.AppNavigation
-import com.nolwendroid.core.navigation.AppNavigator
-import com.nolwendroid.core.navigation.NavigationProvider
+import com.nolwendroid.cinetune.navigation.AppNavigator
+import com.nolwendroid.cinetune.navigation.MyNavigationProvider
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,7 +21,7 @@ class MainActivity : ComponentActivity() {
     lateinit var navigator: AppNavigator
 
     @Inject
-    lateinit var navigationProvider: NavigationProvider
+    lateinit var myNavigationProvider: MyNavigationProvider
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +32,8 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 navigator.setNavController(navController)
 
-          //      AppNavigation(navController, navigationProvider)
-                   //setAppNAvigation(navController, navigator, navigationProvider)
+          //      AppNavigation(navController, myNavigationProvider)
+                   //setAppNAvigation(navController, navigator, myNavigationProvider)
             }
 
 
@@ -46,8 +45,8 @@ class MainActivity : ComponentActivity() {
 //    private fun setAppNAvigation(
 //        navController: NavHostController,
 //        navigator: AppNavigator,
-//        navigation: NavigationProvider) {
-//        AppNavigation(navigator = navigator, navController = navController, navigationProvider = navigation)
+//        navigation: MyNavigationProvider) {
+//        AppNavigation(navigator = navigator, navController = navController, myNavigationProvider = navigation)
 //    }
 }
 

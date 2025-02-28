@@ -53,7 +53,8 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
     // Retrofit & OkHttp
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)

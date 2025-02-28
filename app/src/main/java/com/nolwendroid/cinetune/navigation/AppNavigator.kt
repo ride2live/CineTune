@@ -1,4 +1,4 @@
-package com.nolwendroid.core.navigation
+package com.nolwendroid.cinetune.navigation
 
 import androidx.navigation.NavController
 import javax.inject.Inject

@@ -1,8 +1,8 @@
-package com.nolwendroid.core.navigation
+package com.nolwendroid.cinetune.navigation
 
 import androidx.compose.runtime.Composable
 
-interface NavigationProvider {
+interface MyNavigationProvider {
     fun splashScreen(): @Composable () -> Unit
     fun movieSelectorScreen(): @Composable () -> Unit
 }
