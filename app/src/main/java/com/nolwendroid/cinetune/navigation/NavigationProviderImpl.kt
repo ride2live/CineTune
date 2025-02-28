@@ -1,10 +1,9 @@
 package com.nolwendroid.cinetune.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.Navigator
 import com.nolwendroid.core.navigation.AppNavigator
 import com.nolwendroid.core.navigation.NavigationProvider
-import com.nolwendroid.feature_movie.MovieScreen
+import com.nolwendroid.feature_movie.ui.MovieSelectorScreen
 import com.nolwendroid.feature_splash.ui.CineTuneSplashScreen
 
 class NavigationProviderImpl : NavigationProvider {
@@ -13,6 +12,6 @@ class NavigationProviderImpl : NavigationProvider {
     }
 
     override val movieSelectorScreen: @Composable () -> Unit = {
-        MovieScreen()
+        MovieSelectorScreen()
     }
 }

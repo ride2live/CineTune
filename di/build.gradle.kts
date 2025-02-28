@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.androidx.runtime.android)
     implementation(project(":feature_splash"))
     implementation(project(":feature_movie"))
+    implementation(project(":app"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

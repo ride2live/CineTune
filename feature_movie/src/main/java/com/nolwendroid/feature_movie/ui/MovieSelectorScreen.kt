@@ -1,4 +1,4 @@
-package com.nolwendroid.feature_movie
+package com.nolwendroid.feature_movie.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -6,9 +6,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun MovieScreen() {
+fun MovieSelectorScreen(viewModel: MovieSelectorViewModel = hiltViewModel()) {
 
     Box(
         modifier = Modifier.fillMaxSize(),

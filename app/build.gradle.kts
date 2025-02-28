@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -9,14 +11,18 @@ plugins {
 android {
     namespace = "com.nolwendroid.cinetune"
     compileSdk = 35
-
+    buildFeatures {
+        buildConfig = true //  BuildConfig support
+    }
     defaultConfig {
+        buildConfigField("String", "TMDB_API_KEY", "\"${getApiKey("TMDB_API_KEY")}\"") // ✅ Добавили кавычки
+        buildConfigField("String", "LASTFM_API_KEY", "\"${getApiKey("LASTFM_API_KEY")}\"") // ✅ Добавили кавычки
+        buildConfigField("String", "LASTFM_API_SECRET_KEY", "\"${getApiKey("LASTFM_API_KEY_SECRET")}\"") // ✅ Добавили кавычки
         applicationId = "com.nolwendroid.cinetune"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -52,6 +58,17 @@ android {
     }
 }
 
+//Get api keys safely (no exposing in repository)
+fun getApiKey(propertyName: String): String {
+    val propertiesFile = rootProject.file("local.properties")
+    if (!propertiesFile.exists()) {
+        throw GradleException("You need keys in local/properties")
+    }
+    val properties = Properties()
+    properties.load(propertiesFile.inputStream())
+    return properties.getProperty(propertyName, "") // ✅ Берём ключ из local.properties
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -74,6 +91,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.hilt.navigation.compose)
 
 
 }

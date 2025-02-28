@@ -28,16 +28,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CineTuneTheme {
+                val navController = rememberNavController()
+                navigator.setNavController(navController)
+                val navigation = NavigationProviderImpl()
+                LaunchedEffect(key1 = "") {
+                    delay(3000)
 
+                }
+                setAppNAvigation(navController, navigator, navigation)
             }
-            val navController = rememberNavController()
-            navigator.setNavController(navController)
-            val navigation = NavigationProviderImpl()
-            LaunchedEffect(key1 = "") {
-                delay(3000)
 
-            }
-            setAppNAvigation(navController, navigator, navigation)
 
             //AppNavigation()
         }
