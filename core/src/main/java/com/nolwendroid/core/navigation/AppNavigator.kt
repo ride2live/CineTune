@@ -12,10 +12,8 @@ class AppNavigator @Inject constructor() {
         navController = controller
     }
 
-    fun navigateToMovie() {
-        navController?.navigate(Routes.Movie.route) {
-            popUpTo(Routes.Splash.route) { inclusive = true }
-        }
+    fun navigateTo(route: String) {
+        navController?.navigate(route)
     }
 
     fun navigateBack() {

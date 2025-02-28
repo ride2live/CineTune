@@ -28,8 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -37,9 +40,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get() // ✅ Используем версию из TOML
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+
 }
 
 dependencies {
@@ -51,6 +52,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Retrofit & OkHttp
     implementation(libs.retrofit)

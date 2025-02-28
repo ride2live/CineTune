@@ -1,10 +1,9 @@
 package com.nolwendroid.di
 
 import com.nolwendroid.cinetune.BuildConfig
-import com.nolwendroid.core.network.LastFmApi
-import com.nolwendroid.core.network.TmdbApi
 import com.nolwendroid.di.consts.NetworkConst.LAST_FM_BASE_URL
 import com.nolwendroid.di.consts.NetworkConst.TMDB_BASE_URL
+import com.nolwendroid.feature_movie.api.TmdbApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -96,16 +95,16 @@ object CoreModule {
             .build()
     }
 
-    @Provides
-    @Singleton
-    fun provideLastFmApi(@Named("LastFmRetrofit") retrofit: Retrofit): LastFmApi {
-        return retrofit.create(LastFmApi::class.java)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideLastFmApi(@Named("LastFmRetrofit") retrofit: Retrofit): LastFmApi {
+//        return retrofit.create(L::class.java)
+//    }
 
     @Provides
     @Singleton
-    fun provideTmdbApi(@Named("TmdbRetrofit") retrofit: Retrofit): TmdbApi {
-        return retrofit.create(TmdbApi::class.java)
+    fun provideTmdbApi(@Named("TmdbRetrofit") retrofit: Retrofit): TmdbApiService {
+        return retrofit.create(TmdbApiService::class.java)
     }
 }
 

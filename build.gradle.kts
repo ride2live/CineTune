@@ -7,21 +7,5 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.hilt) apply false
 }
-//
-//extra["TMDBApiKey"] = getTMDBApiKey()
-//extra["lastFmAPiKey"] = getLastFmAPiKey()
-//extra["lastFmAPiSecretKey"] = getLastFmAPiSecretKey()
-//
-//fun getTMDBApiKey(): String {
-//    return gradleLocalProperties(rootDir, providers).getProperty("TMDB_API_KEY")
-//}
-//
-//fun getLastFmAPiKey(): String {
-//    return gradleLocalProperties(rootDir, providers).getProperty("LASTFM_API_KEY")
-//}
-//
-//fun getLastFmAPiSecretKey(): String {
-//    return gradleLocalProperties(rootDir, providers).getProperty("LASTFM_API_KEY_SECRET")
-//}
 
 

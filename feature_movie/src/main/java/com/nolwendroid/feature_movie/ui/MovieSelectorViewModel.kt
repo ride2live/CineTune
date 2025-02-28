@@ -16,6 +16,7 @@ class MovieSelectorViewModel @Inject constructor(
     // private val sharedPreferences: SharedPreferences // ✅ Локальное хранилище
 ) : ViewModel() {
     init {
+
         viewModelScope.launch {
             try {
                 val moviesList = getPopularMoviesUseCase(1) // ✅ Получаем данные через UseCase

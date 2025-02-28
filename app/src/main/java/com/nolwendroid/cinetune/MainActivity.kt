@@ -6,23 +6,25 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.nolwendroid.cinetune.navigation.NavigationProviderImpl
 import com.nolwendroid.cinetune.ui.theme.CineTuneTheme
 import com.nolwendroid.core.navigation.AppNavigation
 import com.nolwendroid.core.navigation.AppNavigator
+import com.nolwendroid.core.navigation.NavigationProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var navigator: AppNavigator
+
+    @Inject
+    lateinit var navigationProvider: NavigationProvider
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,12 +32,9 @@ class MainActivity : ComponentActivity() {
             CineTuneTheme {
                 val navController = rememberNavController()
                 navigator.setNavController(navController)
-                val navigation = NavigationProviderImpl()
-                LaunchedEffect(key1 = "") {
-                    delay(3000)
 
-                }
-                setAppNAvigation(navController, navigator, navigation)
+          //      AppNavigation(navController, navigationProvider)
+                   //setAppNAvigation(navController, navigator, navigationProvider)
             }
 
 
@@ -43,13 +42,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Composable
-    private fun setAppNAvigation(
-        navController: NavHostController,
-        navigator: AppNavigator,
-        navigation: NavigationProviderImpl) {
-        AppNavigation(navigator = navigator, navController = navController, navigationProvider = navigation)
-    }
+//    @Composable
+//    private fun setAppNAvigation(
+//        navController: NavHostController,
+//        navigator: AppNavigator,
+//        navigation: NavigationProvider) {
+//        AppNavigation(navigator = navigator, navController = navController, navigationProvider = navigation)
+//    }
 }
 
 @Composable

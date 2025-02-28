@@ -16,12 +16,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun CineTuneSplashScreen(navigator: AppNavigator) {
+fun CineTuneSplashScreen() {
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         coroutineScope.launch {
             delay(2000)
-            navigator.navigateToMovie()
         }
     }
     Box(

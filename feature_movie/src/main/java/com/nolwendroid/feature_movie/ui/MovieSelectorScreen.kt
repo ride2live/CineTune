@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun MovieSelectorScreen(viewModel: MovieSelectorViewModel = hiltViewModel()) {
-
+fun MovieSelectorScreen() {
+    val viewModel: MovieSelectorViewModel = hiltViewModel()
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

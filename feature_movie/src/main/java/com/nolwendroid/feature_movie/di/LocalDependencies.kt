@@ -12,11 +12,20 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 abstract class MovieModule {
     @Binds
-    @Singleton
     abstract fun bindMovieRepository(
         impl: MovieRepositoryImpl
     ): MovieRepository
+}
+
+@Module
+@InstallIn(ViewModelComponent::class)
+object UseCaseModule {
+
+    @Provides
+    fun provideGetPopularMoviesUseCase(repository: MovieRepository): GetPopularMoviesUseCase {
+        return GetPopularMoviesUseCase(repository)
+    }
 }

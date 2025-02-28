@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
-  id("kotlin-kapt")
-
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin") // 🔹 Добавляем Hilt-плагин явно
 }
 
 android {
@@ -15,9 +15,21 @@ android {
         buildConfig = true //  BuildConfig support
     }
     defaultConfig {
-        buildConfigField("String", "TMDB_API_KEY", "\"${getApiKey("TMDB_API_KEY")}\"") // ✅ Добавили кавычки
-        buildConfigField("String", "LASTFM_API_KEY", "\"${getApiKey("LASTFM_API_KEY")}\"") // ✅ Добавили кавычки
-        buildConfigField("String", "LASTFM_API_SECRET_KEY", "\"${getApiKey("LASTFM_API_KEY_SECRET")}\"") // ✅ Добавили кавычки
+        buildConfigField(
+            "String",
+            "TMDB_API_KEY",
+            "\"${getApiKey("TMDB_API_KEY")}\""
+        ) // ✅ Добавили кавычки
+        buildConfigField(
+            "String",
+            "LASTFM_API_KEY",
+            "\"${getApiKey("LASTFM_API_KEY")}\""
+        ) // ✅ Добавили кавычки
+        buildConfigField(
+            "String",
+            "LASTFM_API_SECRET_KEY",
+            "\"${getApiKey("LASTFM_API_KEY_SECRET")}\""
+        ) // ✅ Добавили кавычки
         applicationId = "com.nolwendroid.cinetune"
         minSdk = 24
         targetSdk = 35
@@ -39,17 +51,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get() // ✅ Используем версию из TOML
+        kotlinCompilerExtensionVersion =
+            libs.versions.composeCompiler.get() // ✅ Используем версию из TOML
     }
     packaging {
         resources {
@@ -79,11 +92,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.hilt.android)
+
     implementation(project(":core"))
     implementation(project(":feature_splash"))
     implementation(project(":feature_movie"))
-    kapt(libs.hilt.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -91,7 +104,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
     implementation(libs.androidx.hilt.navigation.compose)
-
-
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 }
