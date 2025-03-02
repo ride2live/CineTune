@@ -15,7 +15,6 @@ object KeysModule {
     @Provides
     @Singleton
     @Named("LastFmApiKey")
-
     fun provideLastFmApiKey(): String {
         return BuildConfig.LASTFM_API_KEY
     }
@@ -23,10 +22,18 @@ object KeysModule {
     @Provides
     @Singleton
     @Named("TmdbApiKey")
-
-    fun provideTMDBFmApiKey(): String {
+    fun provideTMDBApiKey(): String {
         Log.d("Hilt-Debug", "🔍 TmdbApiKey: ${BuildConfig.TMDB_API_KEY}")
         Log.d("Hilt-Debug", "✅ TmdbApiKey успешно создан!")
         return BuildConfig.TMDB_API_KEY
+    }
+
+    @Provides
+    @Singleton
+    @Named("KinopoiskApiKey")
+    fun provideKinopoiskApiKey(): String {
+        Log.d("Hilt-Debug", "🔍 TmdbApiKey: ${BuildConfig.KINOPOISK_API_KEY}")
+        Log.d("Hilt-Debug", "✅ TmdbApiKey успешно создан!")
+        return BuildConfig.KINOPOISK_API_KEY
     }
 }

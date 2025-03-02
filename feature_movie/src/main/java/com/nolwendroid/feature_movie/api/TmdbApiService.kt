@@ -1,7 +1,7 @@
 package com.nolwendroid.feature_movie.api
 
 
-import com.nolwendroid.feature_movie.domain.model.MovieResponse
+import com.nolwendroid.feature_movie.data.model.MovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

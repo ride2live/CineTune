@@ -1,6 +1,7 @@
 package com.nolwendroid.feature_movie.di
 
 import android.util.Log
+import com.nolwendroid.feature_movie.api.KinopoiskApiService
 import com.nolwendroid.feature_movie.api.TmdbApiService
 import dagger.Module
 import dagger.Provides
@@ -20,5 +21,13 @@ object MovieNetworkModule {
         Log.d("Hilt-Debug", "✅ TmdbApiService создан в feature_movie")
 
         return retrofit.create(TmdbApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideKinopoiskApi(@Named("KinopoiskRetrofit") retrofit: Retrofit): KinopoiskApiService {
+        Log.d("Hilt-Debug", "✅ KinopoiskApiService создан в feature_movie")
+
+        return retrofit.create(KinopoiskApiService::class.java)
     }
 }

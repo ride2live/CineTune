@@ -32,7 +32,7 @@ android {
         )
         buildConfigField(
             "String",
-            "LASTFM_API_SECRET_KEY",
+            "KINOPOISK_API_KEY",
             "\"${getApiKey("KINOPOISK_API_KEY")}\""
         )
         applicationId = "com.nolwendroid.cinetune"

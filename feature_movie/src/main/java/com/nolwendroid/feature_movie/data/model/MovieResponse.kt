@@ -1,7 +1,6 @@
-package com.nolwendroid.feature_movie.domain.model
+package com.nolwendroid.feature_movie.data.model
 
 import com.google.gson.annotations.SerializedName
-import com.nolwendroid.feature_movie.data.model.MovieDTO
 
 data class MovieResponse(
     @SerializedName("page") val page: Int,

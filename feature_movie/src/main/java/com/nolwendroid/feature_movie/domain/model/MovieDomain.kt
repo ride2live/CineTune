@@ -1,7 +1,5 @@
 package com.nolwendroid.feature_movie.domain.model
 
-import com.google.gson.annotations.SerializedName
-
 data class MovieDomain(
     val id: Int,
     val title: String,

@@ -2,7 +2,7 @@ package com.nolwendroid.feature_movie.di
 
 import com.nolwendroid.feature_movie.api.TmdbApiService
 import com.nolwendroid.feature_movie.data.model.MovieDTO
-import com.nolwendroid.feature_movie.domain.model.MovieResponse
+import com.nolwendroid.feature_movie.data.model.MovieResponse
 import retrofit2.http.Query
 
 class TmdbApiServiceMock : TmdbApiService {

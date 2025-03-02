@@ -1,7 +1,10 @@
 package com.nolwendroid.feature_movie.di
 
+import com.nolwendroid.feature_movie.data.MovieKnpRepository
+import com.nolwendroid.feature_movie.data.MovieKnpRepositoryImpl
 import com.nolwendroid.feature_movie.data.MovieRepository
 import com.nolwendroid.feature_movie.data.MovieRepositoryImpl
+import com.nolwendroid.feature_movie.domain.GetPopularMoviesKnpUseCase
 import com.nolwendroid.feature_movie.domain.GetPopularMoviesUseCase
 import dagger.Binds
 import dagger.Module
@@ -19,6 +22,12 @@ abstract class MovieModule {
     abstract fun bindMovieRepository(
         impl: MovieRepositoryImpl
     ): MovieRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMovieKnpRepository(
+        impl: MovieKnpRepositoryImpl
+    ): MovieKnpRepository
 }
 
 @Module
@@ -28,5 +37,10 @@ object UseCaseModule {
     @Provides
     fun provideGetPopularMoviesUseCase(repository: MovieRepository): GetPopularMoviesUseCase {
         return GetPopularMoviesUseCase(repository)
+    }
+
+    @Provides
+    fun provideGetPopularMoviesKnpUseCase(repository: MovieKnpRepository): GetPopularMoviesKnpUseCase {
+        return GetPopularMoviesKnpUseCase(repository)
     }
 }
