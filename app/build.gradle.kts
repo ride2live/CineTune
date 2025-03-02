@@ -19,17 +19,22 @@ android {
             "String",
             "TMDB_API_KEY",
             "\"${getApiKey("TMDB_API_KEY")}\""
-        ) // ✅ Добавили кавычки
+        )
         buildConfigField(
             "String",
             "LASTFM_API_KEY",
             "\"${getApiKey("LASTFM_API_KEY")}\""
-        ) // ✅ Добавили кавычки
+        )
         buildConfigField(
             "String",
             "LASTFM_API_SECRET_KEY",
             "\"${getApiKey("LASTFM_API_KEY_SECRET")}\""
-        ) // ✅ Добавили кавычки
+        )
+        buildConfigField(
+            "String",
+            "LASTFM_API_SECRET_KEY",
+            "\"${getApiKey("KINOPOISK_API_KEY")}\""
+        )
         applicationId = "com.nolwendroid.cinetune"
         minSdk = 24
         targetSdk = 35
@@ -62,7 +67,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion =
-            libs.versions.composeCompiler.get() // ✅ Используем версию из TOML
+            libs.versions.composeCompiler.get()
     }
     packaging {
         resources {
@@ -79,7 +84,8 @@ fun getApiKey(propertyName: String): String {
     }
     val properties = Properties()
     properties.load(propertiesFile.inputStream())
-    return properties.getProperty(propertyName, "") // ✅ Берём ключ из local.properties
+    // apiKey from local.properties by name
+    return properties.getProperty(propertyName, "")
 }
 
 dependencies {
@@ -93,9 +99,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
 
-    implementation(project(":core"))
     implementation(project(":feature_splash"))
     implementation(project(":feature_movie"))
+    implementation(project(":core"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -109,4 +115,11 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    // Retrofit & OkHttp
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+
 }

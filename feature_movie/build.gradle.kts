@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin") // 🔹 Добавляем Hilt-плагин явно
 }
 
 android {
@@ -48,8 +51,11 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material3)
-    implementation(libs.hilt.android)
+
+
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
 
     // Retrofit & OkHttp

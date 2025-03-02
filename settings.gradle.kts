@@ -22,7 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "CineTune"
 include(":app")
 include(":core")
-include(":di")
-include(":presentation")
 include(":feature_splash")
 include(":feature_movie")
