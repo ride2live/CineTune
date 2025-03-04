@@ -10,6 +10,7 @@ fun <T, R> Flow<ResultState<T>>.mapResultState(transform: (T) -> R): Flow<Result
             is ResultState.Success -> ResultState.Success(transform(result.data))
             is ResultState.Error -> result
             is ResultState.Loading -> result
+            is ResultState.Idle -> result
         }
     }
 }

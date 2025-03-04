@@ -3,11 +3,9 @@ package com.nolwendroid.feature_movie.domain
 import android.util.Log
 import com.nolwendroid.core.di.network.ResultState
 import com.nolwendroid.feature_movie.data.MovieKnpRepository
-import com.nolwendroid.feature_movie.domain.model.MovieDomain
 import com.nolwendroid.core.extensions.mapResultState
 import com.nolwendroid.feature_movie.domain.mappers.toUi
-import com.nolwendroid.feature_movie.domain.model.MovieKnpDomain
-import com.nolwendroid.feature_movie.ui.model.MovieKnpUi
+import com.nolwendroid.core.model.MovieKnpUi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

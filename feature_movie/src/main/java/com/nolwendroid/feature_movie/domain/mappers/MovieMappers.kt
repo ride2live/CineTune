@@ -4,7 +4,7 @@ import com.nolwendroid.feature_movie.data.model.MovieDTO
 import com.nolwendroid.feature_movie.data.model.MovieKnpDto
 import com.nolwendroid.feature_movie.domain.model.MovieDomain
 import com.nolwendroid.feature_movie.domain.model.MovieKnpDomain
-import com.nolwendroid.feature_movie.ui.model.MovieKnpUi
+import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.feature_movie.ui.model.MovieUi
 
 //No need to use Mapper class - no Di or Context needed
