@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nolwendroid.core.di.network.ResultState
 import com.nolwendroid.feature_movie.api.TmdbApiService
 import com.nolwendroid.feature_movie.domain.GetPopularMoviesKnpUseCase
 import com.nolwendroid.feature_movie.domain.GetPopularMoviesUseCase
@@ -21,34 +22,33 @@ class MovieSelectorViewModel @Inject constructor(
 ) : ViewModel() {
     init {
         Log.d("Hilt-Debug", "✅ MovieSelectorViewModel успешно создан")
-        viewModelScope.launch {
-            try {
-                val moviesList = getPopularMoviesUseCase(1) // ✅ Получаем данные через UseCase
-                println("Чо за фигня")
-                println(moviesList)
-            } catch (e: Exception) {
-                println(e.message)
-            } finally {
-                println("got it")
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                val moviesList = getPopularMoviesUseCase(1) // ✅ Получаем данные через UseCase
+//                println("Чо за фигня")
+//                println(moviesList)
+//            } catch (e: Exception) {
+//                println(e.message)
+//            } finally {
+//                println("got it")
+//            }
+//        }
 
         viewModelScope.launch {
-            try {
-                val moviesList = getPopularMoviesKnpUseCase()
-                    .map { list -> list.map {
-                        println(it)
-                        it.toUi() } }
-                    .collect{
-                    println("Кинопоиск ответил")
-                    println(it)
-                } // ✅ Получаем данные через UseCase
-
-            } catch (e: Exception) {
-                println("Кинопоиск зафейлился")
-                println(e.message)
-            } finally {
-                println("got it")
+            getPopularMoviesKnpUseCase().collect { result ->
+                when (result) {
+                    is ResultState.Success -> {
+                        println("Кинопоиск ответил: ${result.data}")
+                     //   cancel() // ⛔ Останавливаем корутину
+                    }
+                    is ResultState.Error -> {
+                        println("Кинопоиск зафейлился: ${result.message}")
+                     //   cancel() // ⛔ Останавливаем корутину
+                    }
+                    is ResultState.Loading -> {
+                        println("Загрузка...")
+                    }
+                }
             }
         }
     }

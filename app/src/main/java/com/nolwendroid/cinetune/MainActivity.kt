@@ -37,49 +37,19 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 AppNavigation(navController, navigator)
             }
-
-
-            //AppNavigation()
         }
-//        lifecycleScope.launch {
-//            delay(2000) // Ждём, чтобы всё инициализировалось
-//            Log.d("Hilt-Debug", "✅ repository = $repository")
-//        }
 
-        Thread {
-            try {
-                val url = URL("https://api.themoviedb.org/3/movie/popular?api_key=1f9fddb547e56742145384726df94c83")
-                val conn = url.openConnection() as HttpURLConnection
-                conn.requestMethod = "GET"
-                conn.connect()
-                Log.d("Network-Test", "Ответ: ${conn.responseCode}")
-            } catch (e: Exception) {
-                Log.e("Network-Test", "Ошибка подключения: ${e.message}", e)
-            }
-        }.start()
-    }
 
-//    @Composable
-//    private fun setAppNAvigation(
-//        navController: NavHostController,
-//        navigator: AppNavigator,
-//        navigation: MyNavigationProvider) {
-//        AppNavigation(navigator = navigator, navController = navController, myNavigationProvider = navigation)
-//    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CineTuneTheme {
-        Greeting("Android")
+//        Thread {
+//            try {
+//                val url = URL("https://api.themoviedb.org/3/movie/popular?api_key=1f9fddb547e56742145384726df94c83")
+//                val conn = url.openConnection() as HttpURLConnection
+//                conn.requestMethod = "GET"
+//                conn.connect()
+//                Log.d("Network-Test", "Ответ: ${conn.responseCode}")
+//            } catch (e: Exception) {
+//                Log.e("Network-Test", "Ошибка подключения: ${e.message}", e)
+//            }
+//        }.start()
     }
 }

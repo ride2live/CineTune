@@ -2,7 +2,6 @@ package com.nolwendroid.di
 
 import android.util.Log
 import com.nolwendroid.di.consts.NetworkConst.KINOPOISK_BASE_URL
-import com.nolwendroid.di.consts.NetworkConst.LAST_FM_BASE_URL
 import com.nolwendroid.di.consts.NetworkConst.TMDB_BASE_URL
 import dagger.Module
 import dagger.Provides

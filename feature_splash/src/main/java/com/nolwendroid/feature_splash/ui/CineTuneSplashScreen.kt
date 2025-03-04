@@ -19,7 +19,7 @@ fun CineTuneSplashScreen(onNavigateToMovie: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         coroutineScope.launch {
-            delay(2000)
+            delay(500)
             onNavigateToMovie()
         }
     }

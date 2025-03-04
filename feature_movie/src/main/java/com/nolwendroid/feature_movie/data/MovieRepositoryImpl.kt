@@ -14,7 +14,7 @@ class MovieRepositoryImpl @Inject constructor(
     }
     override suspend fun getPopularMovies(page: Int): List<MovieDomain> {
         return api.getPopularMovies(page = page).results.map {
-
+            Log.d("MovieRepositoryImpl", "✅ MovieRepositoryImpl успешно создан")
             it.toDomain() }
     }
 }
