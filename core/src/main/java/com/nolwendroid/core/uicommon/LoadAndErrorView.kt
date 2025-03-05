@@ -14,6 +14,9 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,11 +35,15 @@ fun <T> BaseView(
     onRefresh: () -> Unit,
     content: @Composable (T) -> Unit
 ) {
+    var isRefreshing by remember { mutableStateOf(false) }
     val uiState by state.collectAsState()
     PullToRefreshBox(
-        onRefresh = onRefresh,
+        onRefresh = {
+            isRefreshing = true
+            onRefresh()
+        },
         modifier = modifier,
-        isRefreshing = false
+        isRefreshing = isRefreshing
     ) {
         Box(
             modifier = modifier
@@ -47,10 +54,12 @@ fun <T> BaseView(
             when (uiState) {
                 is ResultState.Idle -> {} // 🔹 Ничего не показываем
                 is ResultState.Loading -> {
+                    isRefreshing = false
                     CircularProgressIndicator()
                 }
 
                 is ResultState.Error -> {
+                    isRefreshing = false
                     val errorMessage = (uiState as ResultState.Error).message
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = "Ошибка: $errorMessage", color = Color.Red, fontSize = 18.sp)
@@ -61,7 +70,10 @@ fun <T> BaseView(
                     }
                 }
 
-                is ResultState.Success -> content((uiState as ResultState.Success<T>).data)
+                is ResultState.Success -> {
+                    isRefreshing = false
+                    content((uiState as ResultState.Success<T>).data)
+                }
             }
         }
     }

@@ -2,7 +2,6 @@ package com.nolwendroid.feature_movie.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
-import com.nolwendroid.feature_movie.di.TmdbApiServiceMock
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -25,8 +23,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
 import com.nolwendroid.core.uicommon.MovieItem
-import com.nolwendroid.feature_movie.data.MovieRepositoryImpl
-import com.nolwendroid.feature_movie.domain.GetPopularMoviesUseCase
 
 @Composable
 fun MovieSelectorScreen(
@@ -34,12 +30,8 @@ fun MovieSelectorScreen(
     val viewModel: MovieSelectorViewModel = hiltViewModel()
     BaseView(
         state = viewModel.movies,
-        onRetry = {
-
-        },
-        onRefresh = {
-            viewModel.refreshMovies()
-        }
+        onRetry = viewModel::refreshMovies,
+        onRefresh = viewModel::refreshMovies
     ) { movies ->
         val moviesState = remember { mutableStateListOf(*movies.toTypedArray()) }
 
@@ -48,7 +40,7 @@ fun MovieSelectorScreen(
                 items(moviesState, key = { it.id }) { movie ->
                     MovieItem(
                         movie = movie,
-                        onDragStart = {
+                        onDragEnd = {
                             moviesState.remove(movie)
                            // onMovieSelected(movie)
                         }
