@@ -30,10 +30,17 @@ import com.nolwendroid.feature_movie.domain.GetPopularMoviesUseCase
 
 @Composable
 fun MovieSelectorScreen(
-    viewModel: MovieSelectorViewModel = hiltViewModel(),
-    onMovieSelected: (MovieKnpUi) -> Unit
 ) {
-    BaseView(state = viewModel.movies) { movies ->
+    val viewModel: MovieSelectorViewModel = hiltViewModel()
+    BaseView(
+        state = viewModel.movies,
+        onRetry = {
+
+        },
+        onRefresh = {
+            viewModel.refreshMovies()
+        }
+    ) { movies ->
         val moviesState = remember { mutableStateListOf(*movies.toTypedArray()) }
 
         Column(modifier = Modifier.fillMaxSize()) {
@@ -43,7 +50,7 @@ fun MovieSelectorScreen(
                         movie = movie,
                         onDragStart = {
                             moviesState.remove(movie)
-                            onMovieSelected(movie)
+                           // onMovieSelected(movie)
                         }
                     )
                 }
@@ -55,7 +62,7 @@ fun MovieSelectorScreen(
                     .height(100.dp)
                     .background(Color.Gray),
                 onDrop = { movie ->
-                    onMovieSelected(movie)
+                   // onMovieSelected(movie)
                 }
             )
         }

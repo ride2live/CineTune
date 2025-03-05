@@ -3,6 +3,7 @@ package com.nolwendroid.core.uicommon
 import android.graphics.Movie
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,9 +37,10 @@ fun MovieItem(movie: MovieKnpUi, onDragStart: (MovieKnpUi) -> Unit) {
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surface)
             .pointerInput(Unit) {
-                detectDragGestures { _, _ -> onDragStart(movie) }
-            },
-        elevation = CardDefaults.cardElevation(
+                detectTapGestures(onLongPress = { // Добавляем обработку долгого нажатия
+                    onDragStart(movie) // Вызываем onDragStart только после долгого нажатия
+                })
+            }, elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
         )
     ) {
@@ -51,7 +53,7 @@ fun MovieItem(movie: MovieKnpUi, onDragStart: (MovieKnpUi) -> Unit) {
                 model = movie.posterUrl,
                 contentDescription = movie.title,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(180.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
 

@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,39 +23,46 @@ import androidx.compose.ui.unit.sp
 import com.nolwendroid.core.di.network.ResultState
 import kotlinx.coroutines.flow.StateFlow
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> BaseView(
     state: StateFlow<ResultState<T>>,
     modifier: Modifier = Modifier,
     onRetry: (() -> Unit)? = null,
+    onRefresh: () -> Unit,
     content: @Composable (T) -> Unit
 ) {
     val uiState by state.collectAsState()
-
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+    PullToRefreshBox(
+        onRefresh = onRefresh,
+        modifier = modifier,
+        isRefreshing = false
     ) {
-        when (uiState) {
-            is ResultState.Idle -> {} // 🔹 Ничего не показываем
-            is ResultState.Loading -> {
-                CircularProgressIndicator()
-            }
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            when (uiState) {
+                is ResultState.Idle -> {} // 🔹 Ничего не показываем
+                is ResultState.Loading -> {
+                    CircularProgressIndicator()
+                }
 
-            is ResultState.Error -> {
-                val errorMessage = (uiState as ResultState.Error).message
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "Ошибка: $errorMessage", color = Color.Red, fontSize = 18.sp)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    onRetry?.let {
-                        Button(onClick = it) { Text(text = "Повторить") }
+                is ResultState.Error -> {
+                    val errorMessage = (uiState as ResultState.Error).message
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Ошибка: $errorMessage", color = Color.Red, fontSize = 18.sp)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        onRetry?.let {
+                            Button(onClick = it) { Text(text = "Повторить") }
+                        }
                     }
                 }
-            }
 
-            is ResultState.Success -> content((uiState as ResultState.Success<T>).data)
+                is ResultState.Success -> content((uiState as ResultState.Success<T>).data)
+            }
         }
     }
 }
