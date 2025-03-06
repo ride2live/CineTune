@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
@@ -42,7 +43,7 @@ fun MovieSelectorScreen(
                         movie = movie,
                         onDragEnd = {
                             moviesState.remove(movie)
-                           // onMovieSelected(movie)
+                            // onMovieSelected(movie)
                         }
                     )
                 }
@@ -50,16 +51,18 @@ fun MovieSelectorScreen(
 
             DropTargetArea(
                 modifier = Modifier
+                    .zIndex(0f)
                     .fillMaxWidth()
                     .height(100.dp)
                     .background(Color.Gray),
                 onDrop = { movie ->
-                   // onMovieSelected(movie)
+                    // onMovieSelected(movie)
                 }
             )
         }
     }
 }
+
 @Composable
 fun DropTargetArea(
     modifier: Modifier = Modifier,
@@ -68,14 +71,14 @@ fun DropTargetArea(
     Box(
         modifier = modifier
             .background(Color.Gray)
-            .pointerInput(Unit) {
-                detectDragGesturesAfterLongPress(onDragEnd = {
-                    // Здесь можно обработать событие окончания перетаскивания
-                }) { change, _ ->
-                    change.consume()
-                }
-            },
-        contentAlignment = Alignment.Center
+//            .pointerInput(Unit) {
+//                detectDragGesturesAfterLongPress(onDragEnd = {
+//                    // Здесь можно обработать событие окончания перетаскивания
+//                }) { change, _ ->
+//                    change.consume()
+//                }
+//            },
+        , contentAlignment = Alignment.Center
     ) {
         Text(text = "Перетащите сюда", color = Color.White, fontSize = 16.sp)
     }

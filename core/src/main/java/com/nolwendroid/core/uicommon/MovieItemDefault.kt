@@ -41,7 +41,7 @@ fun MovieItem(movie: MovieKnpUi, onDragEnd: (MovieKnpUi) -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     Card(
         modifier = Modifier
-            .zIndex(if (isDragging.value) 1f else 0f)
+            .zIndex(if (isDragging.value) 2f else 0f)
             .offset { IntOffset(offsetX.value.toInt(), offsetY.value.toInt()) }
             .fillMaxWidth()
             .padding(8.dp)
