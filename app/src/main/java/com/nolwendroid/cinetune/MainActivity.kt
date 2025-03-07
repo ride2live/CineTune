@@ -31,25 +31,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("Hilt-Debug", "✅ MainActivity успешно запущена")
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContent {
             CineTuneTheme {
                 val navController = rememberNavController()
                 AppNavigation(navController, navigator)
             }
         }
-
-
-//        Thread {
-//            try {
-//                val url = URL("https://api.themoviedb.org/3/movie/popular?api_key=1f9fddb547e56742145384726df94c83")
-//                val conn = url.openConnection() as HttpURLConnection
-//                conn.requestMethod = "GET"
-//                conn.connect()
-//                Log.d("Network-Test", "Ответ: ${conn.responseCode}")
-//            } catch (e: Exception) {
-//                Log.e("Network-Test", "Ошибка подключения: ${e.message}", e)
-//            }
-//        }.start()
     }
 }

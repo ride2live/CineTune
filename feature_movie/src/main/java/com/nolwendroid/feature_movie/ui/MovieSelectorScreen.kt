@@ -1,7 +1,6 @@
 package com.nolwendroid.feature_movie.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,14 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
-import com.nolwendroid.core.uicommon.MovieItem
+import com.nolwendroid.core.uicommon.draganddrop.DraggableSurface
 
 @Composable
 fun MovieSelectorScreen(
@@ -35,51 +30,30 @@ fun MovieSelectorScreen(
         onRefresh = viewModel::refreshMovies
     ) { movies ->
         val moviesState = remember { mutableStateListOf(*movies.toTypedArray()) }
+        DraggableSurface {
+            Column(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(modifier = Modifier.weight(1f)) {
+                    items(moviesState, key = { it.id }) { movie ->
+                        MovieItem(
+                            movie = movie,
+                            onDragEnd = {
+                                moviesState.remove(movie)
+                            }
+                        )
+                    }
+                }
 
-        Column(modifier = Modifier.fillMaxSize()) {
-            LazyColumn(modifier = Modifier.weight(1f)) {
-                items(moviesState, key = { it.id }) { movie ->
-                    MovieItem(
-                        movie = movie,
-                        onDragEnd = {
-                            moviesState.remove(movie)
-                            // onMovieSelected(movie)
-                        }
+                Box(modifier = Modifier
+                    .height(120.dp)
+                    .fillMaxWidth()
+                    .background(Color.Gray)) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = "Перетащи фильм сюда",
+                        color = Color.White
                     )
                 }
             }
-
-            DropTargetArea(
-                modifier = Modifier
-                    .zIndex(0f)
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .background(Color.Gray),
-                onDrop = { movie ->
-                    // onMovieSelected(movie)
-                }
-            )
         }
-    }
-}
-
-@Composable
-fun DropTargetArea(
-    modifier: Modifier = Modifier,
-    onDrop: (MovieKnpUi) -> Unit
-) {
-    Box(
-        modifier = modifier
-            .background(Color.Gray)
-//            .pointerInput(Unit) {
-//                detectDragGesturesAfterLongPress(onDragEnd = {
-//                    // Здесь можно обработать событие окончания перетаскивания
-//                }) { change, _ ->
-//                    change.consume()
-//                }
-//            },
-        , contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Перетащите сюда", color = Color.White, fontSize = 16.sp)
     }
 }

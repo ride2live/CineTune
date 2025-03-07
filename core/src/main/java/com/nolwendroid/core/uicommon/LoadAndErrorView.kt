@@ -47,12 +47,11 @@ fun <T> BaseView(
     ) {
         Box(
             modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             when (uiState) {
-                is ResultState.Idle -> {} // 🔹 Ничего не показываем
+                is ResultState.Idle -> {}
                 is ResultState.Loading -> {
                     isRefreshing = false
                     CircularProgressIndicator()
