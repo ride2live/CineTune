@@ -26,6 +26,7 @@ fun DraggableSurface(
             content()
 
             if (state.isDragging) {
+                println("Dragging: ${state.isDragging}, Offset: ${state.dragOffset}")
                 var targetSize by remember {
                     mutableStateOf(IntSize.Zero)
                 }

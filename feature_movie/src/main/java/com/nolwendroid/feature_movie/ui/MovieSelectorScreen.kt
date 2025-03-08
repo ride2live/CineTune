@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
 import com.nolwendroid.core.uicommon.draganddrop.DragTargetInfo
 import com.nolwendroid.core.uicommon.draganddrop.DraggableSurface
@@ -51,17 +52,35 @@ fun MovieSelectorScreen() {
                         )
                     }
                 }
-                MovieDropArea()
+                MovieDropArea(viewModel)
             }
         })
     }
 }
 
 @Composable
-fun MovieDropArea() {
-    val dragInfo = LocalDragTargetInfo.current // Получаем доступ к состоянию через LocalDragTargetInfo
+fun MovieDropArea(viewModel: MovieSelectorViewModel) {
+    val dragInfo =
+        LocalDragTargetInfo.current // Получаем доступ к состоянию через LocalDragTargetInfo
     var isCurrentDropTarget by remember { mutableStateOf(false) }
+    var isDraggingLocal: Boolean
     var dropAreaBounds by remember { mutableStateOf(androidx.compose.ui.geometry.Rect.Zero) }
+    LaunchedEffect(dragInfo.isDragging, dragInfo.dragOffset) {
+        isDraggingLocal = dragInfo.isDragging
+
+
+        println("MovieDropArea обновлен isDraggingLocal: $isDraggingLocal")
+        println("MovieDropArea обновлен isCurrentDropTarget: $isCurrentDropTarget")
+        if (isCurrentDropTarget) {
+
+            if (!isDraggingLocal) {
+                println(dragInfo.dataToDrop as MovieKnpUi)
+            }
+        }
+        isCurrentDropTarget = dropAreaBounds.contains(dragInfo.dragPosition + dragInfo.dragOffset)
+    }
+
+
 
     Box(
         modifier = Modifier
@@ -77,11 +96,6 @@ fun MovieDropArea() {
             text = "Перетащи фильм сюда",
             color = Color.White
         )
-    }
-
-    LaunchedEffect(dragInfo.dragPosition, dragInfo.dragOffset, dropAreaBounds) {
-        // Проверяем, находится ли dragInfo внутри целевой области
-        isCurrentDropTarget = dropAreaBounds.contains(dragInfo.dragPosition + dragInfo.dragOffset)
     }
 }
 
