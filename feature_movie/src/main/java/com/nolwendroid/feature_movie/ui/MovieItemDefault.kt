@@ -34,24 +34,20 @@ import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.draganddrop.DragTarget
 
 @Composable
-fun MovieItem(movie: MovieKnpUi, onDragEnd: (MovieKnpUi) -> Unit) {
-    val offsetX = remember { Animatable(0f) }
-    val offsetY = remember { Animatable(0f) }
-    var isDragging by remember { mutableStateOf(false) }
+fun MovieItem(movie: MovieKnpUi) {
+
     DragTarget(modifier = Modifier.wrapContentSize(), dataToDrop = movie, draggable = {
         AsyncImage(
             model = movie.posterUrl,
             contentDescription = movie.title,
             modifier = Modifier
-                .size(120.dp)
+                .size(180.dp)
                 .clip(RoundedCornerShape(8.dp))
         )
     }) {
         Card(modifier = Modifier
-            .zIndex(if (!isDragging) 2f else 0f)
-            .offset { IntOffset(offsetX.value.toInt(), offsetY.value.toInt()) }
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 0.dp)
+            .padding(vertical = 8.dp, horizontal = 12.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(
@@ -66,7 +62,7 @@ fun MovieItem(movie: MovieKnpUi, onDragEnd: (MovieKnpUi) -> Unit) {
                     model = movie.posterUrl,
                     contentDescription = movie.title,
                     modifier = Modifier
-                        .size(120.dp)
+                        .size(180.dp)
                         .clip(RoundedCornerShape(8.dp))
                 )
 

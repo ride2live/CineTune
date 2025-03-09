@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin") // 🔹 Добавляем Hilt-плагин явно
+    id("dagger.hilt.android.plugin")
 }
 
 android {

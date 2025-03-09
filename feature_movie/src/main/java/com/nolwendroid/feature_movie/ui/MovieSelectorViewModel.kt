@@ -1,6 +1,5 @@
 package com.nolwendroid.feature_movie.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nolwendroid.core.di.network.ResultState
@@ -19,15 +18,14 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MovieSelectorViewModel @Inject constructor(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase, // ✅ UseCase автоматически инжектится
-    private val getPopularMoviesKnpUseCase: GetPopularMoviesKnpUseCase, // ✅ UseCase автоматически инжектится
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getPopularMoviesKnpUseCase: GetPopularMoviesKnpUseCase,
 ) : ViewModel() {
-//    val movies: StateFlow<ResultState<List<MovieKnpUi>>> = getPopularMoviesKnpUseCase()
-//        .stateIn(viewModelScope, SharingStarted.Lazily, ResultState.Idle)
+
     private val refreshTrigger = MutableSharedFlow<Unit>()
 
     val movies: StateFlow<ResultState<List<MovieKnpUi>>> = refreshTrigger
-        .onStart { emit(Unit) } // При запуске сразу загружаем данные
+        .onStart { emit(Unit) }
         .flatMapLatest { getPopularMoviesKnpUseCase() }
         .stateIn(viewModelScope, SharingStarted.Lazily, ResultState.Idle)
 
@@ -35,6 +33,9 @@ class MovieSelectorViewModel @Inject constructor(
         viewModelScope.launch {
             refreshTrigger.emit(Unit)
         }
+    }
+    fun addFavoriteMovie(movieKnpUi: MovieKnpUi) {
+
     }
 }
 

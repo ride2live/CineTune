@@ -32,8 +32,6 @@ import com.nolwendroid.core.uicommon.draganddrop.LocalDragTargetInfo
 @Composable
 fun MovieSelectorScreen() {
     val viewModel: MovieSelectorViewModel = hiltViewModel()
-    var dragInfo by remember { mutableStateOf(DragTargetInfo()) }
-
     BaseView(
         state = viewModel.movies,
         onRetry = viewModel::refreshMovies,
@@ -45,10 +43,7 @@ fun MovieSelectorScreen() {
                 LazyColumn(modifier = Modifier.weight(1f)) {
                     items(moviesState, key = { it.id }) { movie ->
                         MovieItem(
-                            movie = movie,
-                            onDragEnd = {
-                                moviesState.remove(movie)
-                            }
+                            movie = movie
                         )
                     }
                 }
@@ -61,21 +56,15 @@ fun MovieSelectorScreen() {
 @Composable
 fun MovieDropArea(viewModel: MovieSelectorViewModel) {
     val dragInfo =
-        LocalDragTargetInfo.current // Получаем доступ к состоянию через LocalDragTargetInfo
+        LocalDragTargetInfo.current
     var isCurrentDropTarget by remember { mutableStateOf(false) }
     var isDraggingLocal: Boolean
     var dropAreaBounds by remember { mutableStateOf(androidx.compose.ui.geometry.Rect.Zero) }
     LaunchedEffect(dragInfo.isDragging, dragInfo.dragOffset) {
         isDraggingLocal = dragInfo.isDragging
-
-
-        println("MovieDropArea обновлен isDraggingLocal: $isDraggingLocal")
-        println("MovieDropArea обновлен isCurrentDropTarget: $isCurrentDropTarget")
-        if (isCurrentDropTarget) {
-
-            if (!isDraggingLocal) {
-                println(dragInfo.dataToDrop as MovieKnpUi)
-            }
+        if (isCurrentDropTarget && !isDraggingLocal) {
+            val movieKnpUi = dragInfo.dataToDrop as MovieKnpUi
+            viewModel.addFavoriteMovie(movieKnpUi)
         }
         isCurrentDropTarget = dropAreaBounds.contains(dragInfo.dragPosition + dragInfo.dragOffset)
     }
