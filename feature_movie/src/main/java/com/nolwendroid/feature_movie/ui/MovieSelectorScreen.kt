@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
-import com.nolwendroid.core.uicommon.draganddrop.DragTargetInfo
 import com.nolwendroid.core.uicommon.draganddrop.DraggableSurface
 import com.nolwendroid.core.uicommon.draganddrop.LocalDragTargetInfo
 

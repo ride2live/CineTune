@@ -1,11 +1,11 @@
 package com.nolwendroid.feature_movie.di
 
-import com.nolwendroid.feature_movie.data.MovieKnpRepository
-import com.nolwendroid.feature_movie.data.MovieKnpRepositoryImpl
-import com.nolwendroid.feature_movie.data.MovieRepository
-import com.nolwendroid.feature_movie.data.MovieRepositoryImpl
-import com.nolwendroid.feature_movie.domain.GetPopularMoviesKnpUseCase
-import com.nolwendroid.feature_movie.domain.GetPopularMoviesUseCase
+import com.nolwendroid.feature_movie.data.repository.MovieKnpRepository
+import com.nolwendroid.feature_movie.data.repository.MovieKnpRepositoryImpl
+import com.nolwendroid.feature_movie.data.repository.MovieRepository
+import com.nolwendroid.feature_movie.data.repository.MovieRepositoryImpl
+import com.nolwendroid.feature_movie.domain.usecase.GetPopularMoviesKnpUseCase
+import com.nolwendroid.feature_movie.domain.usecase.GetPopularMoviesUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

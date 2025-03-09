@@ -1,4 +1,4 @@
-package com.nolwendroid.feature_movie.data
+package com.nolwendroid.feature_movie.data.repository
 
 import android.util.Log
 import com.nolwendroid.feature_movie.api.TmdbApiService

@@ -1,9 +1,8 @@
-package com.nolwendroid.feature_movie.domain
+package com.nolwendroid.feature_movie.domain.usecase
 
 import android.util.Log
-import com.nolwendroid.feature_movie.data.MovieRepository
+import com.nolwendroid.feature_movie.data.repository.MovieRepository
 import com.nolwendroid.feature_movie.domain.mappers.toUi
-import com.nolwendroid.feature_movie.domain.model.MovieDomain
 import com.nolwendroid.feature_movie.ui.model.MovieUi
 import javax.inject.Inject
 

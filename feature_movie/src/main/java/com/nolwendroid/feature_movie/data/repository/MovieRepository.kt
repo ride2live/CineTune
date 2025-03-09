@@ -1,4 +1,4 @@
-package com.nolwendroid.feature_movie.data
+package com.nolwendroid.feature_movie.data.repository
 
 import com.nolwendroid.feature_movie.domain.model.MovieDomain
 
