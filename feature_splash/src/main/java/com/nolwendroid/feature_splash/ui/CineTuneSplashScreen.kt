@@ -25,9 +25,9 @@ fun CineTuneSplashScreen(onNavigateToMovie: () -> Unit) {
             onNavigateToMovie()
         }
     }
-    Surface (modifier = Modifier.background(Color.Red)){
+    Surface {
         Box(
-            modifier = Modifier.fillMaxSize().background(Color.Red),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Image(

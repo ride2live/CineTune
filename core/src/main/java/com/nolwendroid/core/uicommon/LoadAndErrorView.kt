@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun  BaseView(
+fun BaseView(
     modifier: Modifier = Modifier,
     onRetry: (() -> Unit)? = null,
     onRefresh: () -> Unit,
@@ -40,14 +40,10 @@ fun  BaseView(
         onRefresh = {
             isRefreshing = true
             onRefresh()
-        },
-        modifier = modifier,
-        isRefreshing = isRefreshing
+        }, modifier = modifier, isRefreshing = isRefreshing
     ) {
         Box(
-            modifier = modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             content()
             when (uiState) {
@@ -67,18 +63,26 @@ fun  BaseView(
                 is ResultState.Error -> {
                     isRefreshing = false
                     val errorMessage = (uiState as ResultState.Error).message
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Ошибка: $errorMessage", color = Color.Red, fontSize = 18.sp)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        onRetry?.let {
-                            Button(onClick = it) { Text(text = "Повторить") }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.5f)), // Полупрозрачный фон
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "Ошибка: $errorMessage", color = Color.Red, fontSize = 18.sp
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            onRetry?.let {
+                                Button(onClick = it) { Text(text = "Повторить") }
+                            }
                         }
                     }
                 }
 
                 is ResultState.Success -> {
                     isRefreshing = false
-
                 }
             }
         }

@@ -32,6 +32,7 @@ import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
 import com.nolwendroid.core.uicommon.draganddrop.DraggableSurface
 import com.nolwendroid.core.uicommon.draganddrop.LocalDragTargetInfo
+import com.nolwendroid.core.uicommon.icons.CloseButton
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -42,12 +43,12 @@ fun MovieSelectorScreen() {
     val moviesState by viewModel.movies.collectAsState()
     val moviesSearchState by viewModel.searchMovies.collectAsState()
     var isSearching by remember { mutableStateOf(false) }
-    val movies = if (moviesSearchState.isEmpty()) {
+    val movies = if (moviesSearchState.isNotEmpty() && isSearching) {
+        moviesSearchState
+
+    } else {
         isSearching = false
         moviesState
-    } else {
-        isSearching = true
-        moviesSearchState
     }
 
     BaseView(
@@ -56,7 +57,11 @@ fun MovieSelectorScreen() {
         onRefresh = viewModel::getMovies2, content = {
             DraggableSurface(content = {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    SearchBarMovies(viewModel, isSearching)
+                    SearchBarMovies(viewModel, {
+                        isSearching = true
+                    }){
+                        isSearching = false
+                    }
                     LazyColumn(modifier = Modifier.weight(1f)) {
                         items(movies, key = { it.id }) { movie ->
                             MovieItem(
@@ -108,8 +113,8 @@ fun MovieDropArea(viewModel: MovieSelectorViewModel, isSearching: Boolean) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarMovies(viewModel: MovieSelectorViewModel, isSearching: Boolean) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
+fun SearchBarMovies(viewModel: MovieSelectorViewModel, onSearchStarted: () -> Unit,   onClose: () -> Unit) {
+    val expanded by rememberSaveable { mutableStateOf(false) }
     val searchQueryFlow = remember { MutableStateFlow("") }
     val searchQuery by searchQueryFlow.collectAsState()
 
@@ -120,7 +125,9 @@ fun SearchBarMovies(viewModel: MovieSelectorViewModel, isSearching: Boolean) {
             .collectLatest { query ->
                 delay(1000)
                 if (query.length > 2) {
+                    onSearchStarted()
                     viewModel.searchMovies2(query)
+
                 }
             }
     }
@@ -130,6 +137,9 @@ fun SearchBarMovies(viewModel: MovieSelectorViewModel, isSearching: Boolean) {
                 searchQueryFlow.value = it
             })
         }, onExpandedChange = {}) {
+        }
+        CloseButton {
+            onClose()
         }
     }
 }
