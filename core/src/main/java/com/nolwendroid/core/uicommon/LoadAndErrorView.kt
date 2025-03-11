@@ -1,5 +1,6 @@
 package com.nolwendroid.core.uicommon
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,12 +27,12 @@ import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> BaseView(
-    state: StateFlow<ResultState<T>>,
+fun  BaseView(
     modifier: Modifier = Modifier,
     onRetry: (() -> Unit)? = null,
     onRefresh: () -> Unit,
-    content: @Composable (T) -> Unit
+    content: @Composable () -> Unit,
+    state: StateFlow<ResultState<*>>
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
     val uiState by state.collectAsState()
@@ -48,11 +49,19 @@ fun <T> BaseView(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
+            content()
             when (uiState) {
                 is ResultState.Idle -> {}
                 is ResultState.Loading -> {
                     isRefreshing = false
-                    CircularProgressIndicator()
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.5f)), // Полупрозрачный фон
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = Color.White) // Белый лоадер
+                    }
                 }
 
                 is ResultState.Error -> {
@@ -69,7 +78,7 @@ fun <T> BaseView(
 
                 is ResultState.Success -> {
                     isRefreshing = false
-                    content((uiState as ResultState.Success<T>).data)
+
                 }
             }
         }

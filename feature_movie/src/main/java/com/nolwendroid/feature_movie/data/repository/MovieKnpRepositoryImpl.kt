@@ -27,4 +27,16 @@ class MovieKnpRepositoryImpl @Inject constructor(
                 })
         )
     }
+    override fun searchMovies(query: String): Flow<ResultState<List<MovieKnpDomain>>> = flow {
+      emitAll(
+            requestWrapper.sendRequest(
+                apiMethod = { api.searchMovies(query) },
+                mapToDomain = { response ->
+                    println( response.movies)
+                    response.movies.map { it.toDomain() }
+                })
+      )
+    }
+
+
 }

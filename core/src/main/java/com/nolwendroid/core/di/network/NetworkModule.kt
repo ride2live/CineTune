@@ -125,7 +125,6 @@ object CoreModule {
     @Singleton
     @Named("TmdbRetrofit")
     fun provideTmdbRetrofit(@TmdbClient client: OkHttpClient): Retrofit {
-        Log.d("Hilt-Debug", "✅ Retrofit создан в core")
         return Retrofit.Builder()
             .baseUrl(TMDB_BASE_URL)
             .client(client)
@@ -137,7 +136,6 @@ object CoreModule {
     @Singleton
     @Named("KinopoiskRetrofit")
     fun provideKinopoiskRetrofit(@KinopoiskClient client: OkHttpClient): Retrofit {
-        //Log.d("Hilt-Debug", "✅ Retrofit создан в core")
         return Retrofit.Builder()
             .baseUrl(KINOPOISK_BASE_URL)
             .client(client)

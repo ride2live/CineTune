@@ -58,10 +58,7 @@ fun MovieItem(movie: MovieKnpUi) {
                         .size(180.dp)
                         .clip(RoundedCornerShape(8.dp))
                 )
-
-
                 Spacer(modifier = Modifier.width(8.dp))
-
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {

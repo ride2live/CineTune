@@ -6,6 +6,7 @@ import com.nolwendroid.feature_movie.domain.mappers.toDomain
 import com.nolwendroid.feature_movie.domain.model.MovieDomain
 import javax.inject.Inject
 
+@Deprecated("Rudimentary")
 class MovieRepositoryImpl @Inject constructor(
     private val api: TmdbApiService
 ) : MovieRepository {

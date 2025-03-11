@@ -2,6 +2,7 @@ package com.nolwendroid.feature_movie.data.model
 
 import com.google.gson.annotations.SerializedName
 
+@Deprecated("Rudimentary")
 data class MovieDTO(
     @SerializedName("id") val id: Int,
     @SerializedName("title") val title: String,

@@ -25,6 +25,7 @@ paging = "3.3.6"
 coil = "2.5.0"
 room = "2.6.1"
 ksp = "1.9.25-1.0.20"
+uiToolingPreviewAndroid = "1.7.8"
 
 
 
@@ -78,6 +79,7 @@ lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", v
 lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 
 
 [plugins]

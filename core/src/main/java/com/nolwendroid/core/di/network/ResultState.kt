@@ -6,3 +6,7 @@ sealed class ResultState<out T> {
     data object Loading : ResultState<Nothing>()
     data object Idle : ResultState<Nothing>()
 }
+
+fun <T> ResultState<List<T>>.orEmpty(): List<T> {
+    return if (this is ResultState.Success) data.orEmpty() else emptyList()
+}
