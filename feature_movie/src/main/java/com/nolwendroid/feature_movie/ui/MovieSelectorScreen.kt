@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -56,13 +59,13 @@ fun MovieSelectorScreen() {
         onRetry = viewModel::getMovies2,
         onRefresh = viewModel::getMovies2, content = {
             DraggableSurface(content = {
-                Column(modifier = Modifier.fillMaxSize()) {
+                Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                     SearchBarMovies(viewModel, {
                         isSearching = true
                     }){
                         isSearching = false
                     }
-                    LazyColumn(modifier = Modifier.weight(1f)) {
+                    LazyRow(modifier = Modifier.fillMaxWidth().weight(1f)) {
                         items(movies, key = { it.id }) { movie ->
                             MovieItem(
                                 movie = movie
