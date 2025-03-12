@@ -11,10 +11,10 @@ import androidx.compose.ui.unit.dp
 
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFFACA595), // Основной цвет
-    secondary = Color(0xFFB9A187), // Вторичный цвет
-    background = Color(0xFFA39D8D), // Фон
-    surface = Color(0xFFA29C8C), // Поверхности
+    primary = Color(0xFFD7CEC1), // Светлый бежевый
+    secondary = Color(0xFFC5B299), // Немного темнее основного
+    background = Color(0xFFF5F2EB), // Почти белый
+    surface = Color(0xFFEDE8E0), // Светло-бежевый
     onPrimary = Color.Black,
     onSecondary = Color.White,
     onBackground = Color.Black,

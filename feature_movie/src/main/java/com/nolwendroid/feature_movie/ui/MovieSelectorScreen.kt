@@ -1,6 +1,8 @@
 package com.nolwendroid.feature_movie.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
@@ -20,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -48,28 +52,47 @@ fun MovieSelectorScreen() {
     var isSearching by remember { mutableStateOf(false) }
     val movies = if (moviesSearchState.isNotEmpty() && isSearching) {
         moviesSearchState
-
     } else {
         isSearching = false
         moviesState
     }
-
+    val scrollState = rememberScrollState()
+    val firstRow = movies.filterIndexed { index, _ -> index % 2 == 0 }
+    val secondRow = movies - firstRow.toSet()
     BaseView(
         state = viewModel.currentFlow,
         onRetry = viewModel::getMovies2,
         onRefresh = viewModel::getMovies2, content = {
             DraggableSurface(content = {
-                Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
                     SearchBarMovies(viewModel, {
                         isSearching = true
-                    }){
+                    }) {
                         isSearching = false
                     }
-                    LazyRow(modifier = Modifier.fillMaxWidth().weight(1f)) {
-                        items(movies, key = { it.id }) { movie ->
-                            MovieItem(
-                                movie = movie
-                            )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(scrollState),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            firstRow.forEach { movie ->
+                                key(movie.id) {
+                                    MovieItem(movie = movie)
+                                }
+                            }
+                        }
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            secondRow.forEach { movie ->
+                                key(movie.id) {
+                                    MovieItem(movie = movie)
+                                }
+                            }
                         }
                     }
                     MovieDropArea(viewModel, isSearching)
@@ -116,7 +139,11 @@ fun MovieDropArea(viewModel: MovieSelectorViewModel, isSearching: Boolean) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarMovies(viewModel: MovieSelectorViewModel, onSearchStarted: () -> Unit,   onClose: () -> Unit) {
+fun SearchBarMovies(
+    viewModel: MovieSelectorViewModel,
+    onSearchStarted: () -> Unit,
+    onClose: () -> Unit
+) {
     val expanded by rememberSaveable { mutableStateOf(false) }
     val searchQueryFlow = remember { MutableStateFlow("") }
     val searchQuery by searchQueryFlow.collectAsState()
@@ -130,7 +157,6 @@ fun SearchBarMovies(viewModel: MovieSelectorViewModel, onSearchStarted: () -> Un
                 if (query.length > 2) {
                     onSearchStarted()
                     viewModel.searchMovies2(query)
-
                 }
             }
     }

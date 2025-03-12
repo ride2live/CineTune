@@ -64,7 +64,9 @@ class MovieSelectorViewModel @Inject constructor(
         }
     }
     fun removeFromSearch(id: Int) {
+        println("removeFromSearch")
         _searchMovies.value = _searchMovies.value.filter { it.id != id }.toList()
+
     }
 }
 
