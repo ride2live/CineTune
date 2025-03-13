@@ -15,6 +15,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -23,6 +27,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
@@ -71,45 +76,51 @@ fun MovieItem(movie: MovieKnpUi) {
 
 @Composable
 fun MoviePoster(movie: MovieKnpUi) {
+    var isImageLoaded by remember { mutableStateOf(false) }
 //    Box(
 //        modifier = Modifier
 //            .wrapContentSize()
 //            .padding(2.dp)
 //            .border(1.dp, Color(red = 200, green = 200, blue = 200), RoundedCornerShape(16.dp))
 //    ) {
-        Column {
-            Card(
+    val cardElevation by remember(isImageLoaded) {
+        mutableStateOf(if (isImageLoaded) 12.dp else 0.dp)
+    }
+    Column {
+        Card(
+            modifier = Modifier
+                .wrapContentSize()
+                // .shadow(12.dp, RoundedCornerShape(16.dp))
+                .background(Color.Transparent)
+              .shadow(cardElevation, shape = RoundedCornerShape(12.dp)),
+            elevation =CardDefaults.cardElevation(cardElevation),
+            shape = RoundedCornerShape(8.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+        ) {
+            SubcomposeAsyncImage(
+                model = movie.posterUrl,
+                contentDescription = movie.title,
+                onSuccess = { isImageLoaded = true },
+                onError = { isImageLoaded = false },
+                loading = {
+                    Box(
+                        modifier = Modifier
+                            .size(120.dp, 180.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                },
                 modifier = Modifier
-                    .wrapContentSize()
-                    .shadow(12.dp, RoundedCornerShape(16.dp))
-                    .background(Color.Transparent)
-                    .shadow(8.dp, shape = RoundedCornerShape(12.dp)),
-                elevation = CardDefaults.cardElevation(18.dp),
-                shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-            ) {
-                SubcomposeAsyncImage(
-                    model = movie.posterUrl,
-                    contentDescription = movie.title,
-                    loading = {
-                        Box(
-                            modifier = Modifier
-                                .size(120.dp, 180.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    },
-                    modifier = Modifier
-                        .size(120.dp, 180.dp)
-                        .background(Color.Transparent, RoundedCornerShape(12.dp)),
-                    contentScale = ContentScale.FillBounds
-                )
-            }
+                    .size(120.dp, 180.dp)
+                    .background(Color.Transparent, RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.FillBounds
+            )
+        }
 //            Spacer(modifier = Modifier.fillMaxWidth().height(8.dp))
 //            MovieTitle(movie)
-        }
-   // }
+    }
+    // }
 }
 
 @Composable
@@ -134,3 +145,16 @@ fun MovieTitle(movie: MovieKnpUi) {
     )
 }
 
+@Preview(showBackground = true)
+@Composable
+fun MovieItemPreview() {
+    MovieItem(
+        movie = MovieKnpUi(
+            id = 1,
+            title = "Inception",
+            rating = "8.8",
+            posterUrl = "https://upload.wikimedia.org/wikipedia/en/7/7f/Inception_ver3.jpg",
+            year = "1111"
+        )
+    )
+}

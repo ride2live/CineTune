@@ -13,7 +13,7 @@ interface KinopoiskApiService {
     suspend fun getPopularMovies(
         @Query("type") type: String = "TOP_250_MOVIES",
         @Query("page") page: Int = 1
-    ): Response<MovieKnpResponseDto>
+    ): MovieKnpResponseDto
 
     @GET("v2.1/films/search-by-keyword")
     suspend fun searchMovies(

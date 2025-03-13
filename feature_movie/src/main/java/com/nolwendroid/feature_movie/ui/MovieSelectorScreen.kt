@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
 import com.nolwendroid.core.uicommon.draganddrop.DraggableSurface
@@ -47,22 +48,22 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun MovieSelectorScreen() {
     val viewModel: MovieSelectorViewModel = hiltViewModel()
-    val moviesState by viewModel.movies.collectAsState()
+    val movies = viewModel.movies.collectAsLazyPagingItems()
     val moviesSearchState by viewModel.searchMovies.collectAsState()
     var isSearching by remember { mutableStateOf(false) }
-    val movies = if (moviesSearchState.isNotEmpty() && isSearching) {
-        moviesSearchState
-    } else {
-        isSearching = false
-        moviesState
-    }
-    val scrollState = rememberScrollState()
-    val firstRow = movies.filterIndexed { index, _ -> index % 2 == 0 }
-    val secondRow = movies - firstRow.toSet()
+//    val movies2 = if (moviesSearchState.isNotEmpty() && isSearching) {
+//        moviesSearchState
+//    } else {
+//        isSearching = false
+//        movies
+//    }
+//    val scrollState = rememberScrollState()
+//    val firstRow = moviesAny.filterIndexed { index, _ -> index % 2 == 0 }
+//    val secondRow = moviesAny - firstRow.toSet()
     BaseView(
         state = viewModel.currentFlow,
-        onRetry = viewModel::getMovies2,
-        onRefresh = viewModel::getMovies2, content = {
+        onRetry = viewModel::refreshMovies,
+        onRefresh = viewModel::refreshMovies, content = {
             DraggableSurface(content = {
                 Column(
                     modifier = Modifier
@@ -74,27 +75,32 @@ fun MovieSelectorScreen() {
                     }) {
                         isSearching = false
                     }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(scrollState),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            firstRow.forEach { movie ->
-                                key(movie.id) {
-                                    MovieItem(movie = movie)
-                                }
-                            }
-                        }
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            secondRow.forEach { movie ->
-                                key(movie.id) {
-                                    MovieItem(movie = movie)
-                                }
-                            }
+                    LazyRow(modifier = Modifier.fillMaxSize().weight(1f)) {
+                        items(movies.itemCount) { index ->
+                            movies[index]?.let { MovieItem(movie = it) }
                         }
                     }
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .horizontalScroll(scrollState),
+//                        verticalArrangement = Arrangement.spacedBy(8.dp)
+//                    ) {
+//                        Row(modifier = Modifier.fillMaxWidth()) {
+//                            firstRow.forEach { movie ->
+//                                key(movie.id) {
+//                                    MovieItem(movie = movie)
+//                                }
+//                            }
+//                        }
+//                        Row(modifier = Modifier.fillMaxWidth()) {
+//                            secondRow.forEach { movie ->
+//                                key(movie.id) {
+//                                    MovieItem(movie = movie)
+//                                }
+//                            }
+//                        }
+//                    }
                     MovieDropArea(viewModel, isSearching)
                 }
             })
