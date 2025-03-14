@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieKnpRepository {
     fun getPopularMovies(): PagingSource<Int, MovieKnpDomain>
-    fun searchMovies(query: String): Flow<ResultState<List<MovieKnpDomain>>>
+    fun searchMovies(query: String): PagingSource<Int, MovieKnpDomain>
 }

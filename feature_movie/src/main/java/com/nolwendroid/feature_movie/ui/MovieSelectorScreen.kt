@@ -22,6 +22,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +36,7 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
@@ -49,19 +51,27 @@ import kotlinx.coroutines.flow.collectLatest
 fun MovieSelectorScreen() {
     val viewModel: MovieSelectorViewModel = hiltViewModel()
     val movies = viewModel.movies.collectAsLazyPagingItems()
-    val moviesSearchState by viewModel.searchMovies.collectAsState()
+    val moviesSearchState = viewModel.searchMovies.collectAsLazyPagingItems()
+
+
     var isSearching by remember { mutableStateOf(false) }
-//    val movies2 = if (moviesSearchState.isNotEmpty() && isSearching) {
-//        moviesSearchState
-//    } else {
-//        isSearching = false
-//        movies
-//    }
+    val resultMovies by remember {
+        derivedStateOf {
+            if (moviesSearchState.itemCount > 0 && isSearching) {
+                println("moviesSearchState")
+                moviesSearchState
+            } else {
+                println("!!!! not moviesSearchState")
+                isSearching = false
+                movies
+            }
+        }
+    }
 //    val scrollState = rememberScrollState()
 //    val firstRow = moviesAny.filterIndexed { index, _ -> index % 2 == 0 }
 //    val secondRow = moviesAny - firstRow.toSet()
     BaseView(
-        state = viewModel.currentFlow,
+        //state = viewModel.currentFlow,
         onRetry = viewModel::refreshMovies,
         onRefresh = viewModel::refreshMovies, content = {
             DraggableSurface(content = {
@@ -76,8 +86,10 @@ fun MovieSelectorScreen() {
                         isSearching = false
                     }
                     LazyRow(modifier = Modifier.fillMaxSize().weight(1f)) {
-                        items(movies.itemCount) { index ->
-                            movies[index]?.let { MovieItem(movie = it) }
+                        if (resultMovies.itemCount>0)
+                             println(resultMovies[0])
+                        items(resultMovies.itemCount) { index ->
+                            resultMovies[index]?.let { MovieItem(movie = it) }
                         }
                     }
 //                    Column(
@@ -119,11 +131,11 @@ fun MovieDropArea(viewModel: MovieSelectorViewModel, isSearching: Boolean) {
         if (isCurrentDropTarget && !isDraggingLocal) {
             val movieKnpUi = dragInfo.dataToDrop as MovieKnpUi
             viewModel.addFavoriteMovie(movieKnpUi)
-            if (isSearching) {
-                viewModel.removeFromSearch(movieKnpUi.id)
-            } else {
-                viewModel.removeFromMovies(movieKnpUi.id)
-            }
+//            if (isSearching) {
+//                viewModel.removeFromSearch(movieKnpUi.id)
+//            } else {
+//                viewModel.removeFromMovies(movieKnpUi.id)
+//            }
         }
         isCurrentDropTarget = dropAreaBounds.contains(dragInfo.dragPosition + dragInfo.dragOffset)
     }
@@ -162,7 +174,7 @@ fun SearchBarMovies(
                 delay(1000)
                 if (query.length > 2) {
                     onSearchStarted()
-                    viewModel.searchMovies2(query)
+                    viewModel.searchMovies(query)
                 }
             }
     }

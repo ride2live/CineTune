@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 //Api needs for only this feature, no need to hold it in core
+//TODO wrap in Response class
 interface KinopoiskApiService {
     @GET("v2.2/films/collections")
     suspend fun getPopularMovies(
@@ -19,5 +20,5 @@ interface KinopoiskApiService {
     suspend fun searchMovies(
         @Query("keyword") keyword: String,
         @Query("page") page: Int = 1
-    ): Response<MovieKnpSearchResponse>
+    ): MovieKnpSearchResponse
 }

@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nolwendroid.core.di.network.ResultState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,7 +33,7 @@ fun BaseView(
     onRetry: (() -> Unit)? = null,
     onRefresh: () -> Unit,
     content: @Composable () -> Unit,
-    state: StateFlow<ResultState<*>>
+    state: StateFlow<ResultState<*>> = MutableStateFlow<ResultState<*>>(ResultState.Idle)
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
     val uiState by state.collectAsState()
