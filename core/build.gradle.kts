@@ -71,6 +71,10 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
+    //paging
+    api(libs.paging.runtime) // ✅ Делаем зависимости транзитивными
+    api(libs.paging.compose)
+
 
 
 

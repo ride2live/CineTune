@@ -43,7 +43,6 @@ class MovieKnpRepositoryImpl @Inject constructor(
                 return try {
                     val page = params.key ?: 1
                     val response = api.searchMovies(query, page)
-
                     LoadResult.Page(
                         data = response.movies.map { it.toDomain() },
                         prevKey = if (page == 1) null else page - 1,

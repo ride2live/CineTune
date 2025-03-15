@@ -12,6 +12,7 @@ import com.nolwendroid.feature_movie.domain.usecase.SearchMoviesKnpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -26,29 +27,44 @@ class MovieSelectorViewModel @Inject constructor(
     private val favoriteMovies = MutableStateFlow<Set<MovieKnpUi>>(emptySet())  // Избранные
     private val dislikedMovies = MutableStateFlow<Set<MovieKnpUi>>(emptySet())  // Нелюбимые
     private val searchQuery = MutableStateFlow("")
-    private val refreshTrigger = MutableStateFlow(Unit)
+    private val refreshTriggerPopular = MutableStateFlow(Unit)
+    private val refreshTriggerSearch = MutableStateFlow(Unit)
 
-    private val popularMoviesPagingFlow = refreshTrigger
+    private val popularMoviesPagingFlow = refreshTriggerPopular
         .flatMapLatest { getPopularMoviesKnpUseCase() }
-        .cachedIn(viewModelScope) // Кешируем, чтобы не пересоздавался `Flow`
+        .cachedIn(viewModelScope)
+
+    // Поток поиска фильмов (PagingData)
+    private val searchMoviesPagingFlow = searchQuery
+        .flatMapLatest { query ->
+            if (query.isEmpty()) flowOf(PagingData.empty()) else searchMoviesKnpUseCase(query)
+        }
+        .cachedIn(viewModelScope)
+
+    val searchMovies: Flow<PagingData<MovieKnpUi>> = combine(
+        searchMoviesPagingFlow,
+        favoriteMovies.asStateFlow(),
+        dislikedMovies.asStateFlow()
+    ) { pagingData, favorites, disliked ->
+        pagingData.filter { movie -> movie !in favorites && movie !in disliked }
+    }
+
 
     val movies: Flow<PagingData<MovieKnpUi>> = combine(
-        popularMoviesPagingFlow, // `PagingData` не пересоздаётся
+        popularMoviesPagingFlow,
         favoriteMovies,
         dislikedMovies
     ) { pagingData, favorites, disliked ->
         pagingData.filter { movie -> movie !in favorites && movie !in disliked }
     }
 
-    val searchMovies: Flow<PagingData<MovieKnpUi>> = searchQuery
-        .flatMapLatest { query ->
-            if (query.isEmpty()) flowOf(PagingData.empty())
-            else searchMoviesKnpUseCase(query)
-        }
-        .cachedIn(viewModelScope)
 
     fun refreshMovies() {
-        refreshTrigger.value = Unit
+        refreshTriggerPopular.value = Unit
+    }
+    fun refreshSearch(query: String) {
+        searchQuery.value = query
+
     }
 
     fun addFavoriteMovie(movieKnpUi: MovieKnpUi) {
@@ -59,8 +75,5 @@ class MovieSelectorViewModel @Inject constructor(
         dislikedMovies.value += movieKnpUi
     }
 
-    fun searchMovies(query: String) {
-        searchQuery.value = query
-    }
 }
 

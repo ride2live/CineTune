@@ -51,8 +51,11 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material3)
-    debugImplementation(libs.compose.ui.tooling) // Для превью в Android Studio
-    implementation(libs.compose.ui.tooling.preview) // Для аннотации @Preview
+    //@Preview
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
+
+    //Images
     implementation(libs.coil.compose)
 
 
@@ -66,12 +69,7 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
-    //paging
-    implementation(libs.paging.runtime)
-    implementation(libs.paging.compose)
-
-
 
     //Local module dependencies
-    implementation(project(":core"))
+    api(project(":core"))
 }

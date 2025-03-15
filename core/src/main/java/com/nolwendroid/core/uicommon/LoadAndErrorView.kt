@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import com.nolwendroid.core.di.network.ResultState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,61 +33,63 @@ import kotlinx.coroutines.flow.StateFlow
 fun BaseView(
     modifier: Modifier = Modifier,
     onRetry: (() -> Unit)? = null,
-    onRefresh: () -> Unit,
+    onRefresh: (() -> Unit)? = null,
     content: @Composable () -> Unit,
-    state: StateFlow<ResultState<*>> = MutableStateFlow<ResultState<*>>(ResultState.Idle)
+    state: StateFlow<ResultState<*>> = MutableStateFlow<ResultState<*>>(ResultState.Idle),
+    pagingItems: LazyPagingItems<*>? = null
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
     val uiState by state.collectAsState()
-    PullToRefreshBox(
-        onRefresh = {
-            isRefreshing = true
-            onRefresh()
-        }, modifier = modifier, isRefreshing = isRefreshing
+//    PullToRefreshBox(
+//        onRefresh = {
+//            isRefreshing = true
+//            onRefresh()
+//        }, modifier = modifier, isRefreshing = isRefreshing
+//    ) {
+    Box(
+        modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
-        ) {
-            content()
-            when (uiState) {
-                is ResultState.Idle -> {}
-                is ResultState.Loading -> {
-                    isRefreshing = false
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.5f)), // Полупрозрачный фон
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = Color.White) // Белый лоадер
-                    }
+        content()
+        when (pagingItems?.loadState?.refresh) {
+           // is LoadState.NotLoading -> {}
+            is LoadState.Loading -> {
+                isRefreshing = false
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f)), // Полупрозрачный фон
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = Color.White) // Белый лоадер
                 }
+            }
 
-                is ResultState.Error -> {
-                    isRefreshing = false
-                    val errorMessage = (uiState as ResultState.Error).message
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.5f)), // Полупрозрачный фон
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = "Ошибка: $errorMessage", color = Color.Red, fontSize = 18.sp
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            onRetry?.let {
-                                Button(onClick = it) { Text(text = "Повторить") }
-                            }
+            is LoadState.Error -> {
+                isRefreshing = false
+                val errorMessage = (uiState as ResultState.Error).message
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f)), // Полупрозрачный фон
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "Ошибка: $errorMessage", color = Color.Red, fontSize = 18.sp
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        onRetry?.let {
+                            Button(onClick = it) { Text(text = "Повторить") }
                         }
                     }
                 }
-
-                is ResultState.Success -> {
-                    isRefreshing = false
-                }
             }
+
+            else -> {
+                isRefreshing = false
+            }
+
         }
     }
+    // }
 }

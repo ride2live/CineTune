@@ -1,19 +1,13 @@
 package com.nolwendroid.feature_movie.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
@@ -36,7 +30,6 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.core.uicommon.BaseView
@@ -52,8 +45,6 @@ fun MovieSelectorScreen() {
     val viewModel: MovieSelectorViewModel = hiltViewModel()
     val movies = viewModel.movies.collectAsLazyPagingItems()
     val moviesSearchState = viewModel.searchMovies.collectAsLazyPagingItems()
-
-
     var isSearching by remember { mutableStateOf(false) }
     val resultMovies by remember {
         derivedStateOf {
@@ -67,11 +58,8 @@ fun MovieSelectorScreen() {
             }
         }
     }
-//    val scrollState = rememberScrollState()
-//    val firstRow = moviesAny.filterIndexed { index, _ -> index % 2 == 0 }
-//    val secondRow = moviesAny - firstRow.toSet()
     BaseView(
-        //state = viewModel.currentFlow,
+        pagingItems = resultMovies,
         onRetry = viewModel::refreshMovies,
         onRefresh = viewModel::refreshMovies, content = {
             DraggableSurface(content = {
@@ -85,34 +73,30 @@ fun MovieSelectorScreen() {
                     }) {
                         isSearching = false
                     }
-                    LazyRow(modifier = Modifier.fillMaxSize().weight(1f)) {
-                        if (resultMovies.itemCount>0)
-                             println(resultMovies[0])
-                        items(resultMovies.itemCount) { index ->
-                            resultMovies[index]?.let { MovieItem(movie = it) }
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
+                    ) {
+                        items(resultMovies.itemCount / 2, key = { index ->
+                            resultMovies[index * 2]?.id ?: index
+                        }) { index ->
+                            val positionOfFirst = index * 2
+                            val positionOfSecond = positionOfFirst + 1
+                            val firstMovie = resultMovies[positionOfFirst]
+                            val secondMovie =
+                                if (positionOfSecond < resultMovies.itemCount) resultMovies[positionOfSecond] else null
+
+                            Column {
+                                firstMovie?.let {
+                                    key(it.id) { MovieItem(movie = it) }
+                                }
+                                secondMovie?.let {
+                                    key(it.id) { MovieItem(movie = it) }
+                                }
+                            }
                         }
                     }
-//                    Column(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .horizontalScroll(scrollState),
-//                        verticalArrangement = Arrangement.spacedBy(8.dp)
-//                    ) {
-//                        Row(modifier = Modifier.fillMaxWidth()) {
-//                            firstRow.forEach { movie ->
-//                                key(movie.id) {
-//                                    MovieItem(movie = movie)
-//                                }
-//                            }
-//                        }
-//                        Row(modifier = Modifier.fillMaxWidth()) {
-//                            secondRow.forEach { movie ->
-//                                key(movie.id) {
-//                                    MovieItem(movie = movie)
-//                                }
-//                            }
-//                        }
-//                    }
                     MovieDropArea(viewModel, isSearching)
                 }
             })
@@ -131,11 +115,6 @@ fun MovieDropArea(viewModel: MovieSelectorViewModel, isSearching: Boolean) {
         if (isCurrentDropTarget && !isDraggingLocal) {
             val movieKnpUi = dragInfo.dataToDrop as MovieKnpUi
             viewModel.addFavoriteMovie(movieKnpUi)
-//            if (isSearching) {
-//                viewModel.removeFromSearch(movieKnpUi.id)
-//            } else {
-//                viewModel.removeFromMovies(movieKnpUi.id)
-//            }
         }
         isCurrentDropTarget = dropAreaBounds.contains(dragInfo.dragPosition + dragInfo.dragOffset)
     }
@@ -174,7 +153,7 @@ fun SearchBarMovies(
                 delay(1000)
                 if (query.length > 2) {
                     onSearchStarted()
-                    viewModel.searchMovies(query)
+                    viewModel.refreshSearch(query)
                 }
             }
     }
