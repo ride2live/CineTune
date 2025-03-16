@@ -4,15 +4,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -68,6 +78,7 @@ fun MovieSelectorScreen() {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 ) {
+                    Spacer(modifier = Modifier.height(12.dp))
                     SearchBarMovies(viewModel, {
                         isSearching = true
                     }) {
@@ -134,23 +145,18 @@ fun MovieDropArea(viewModel: MovieSelectorViewModel, isSearching: Boolean) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBarMovies(
     viewModel: MovieSelectorViewModel,
     onSearchStarted: () -> Unit,
     onClose: () -> Unit
 ) {
-    val expanded by rememberSaveable { mutableStateOf(false) }
     val searchQueryFlow = remember { MutableStateFlow("") }
     val searchQuery by searchQueryFlow.collectAsState()
-
-
     LaunchedEffect(searchQueryFlow) {
         searchQueryFlow
-            // .debounce(500) // Задержка перед выполнением
             .collectLatest { query ->
-                delay(1000)
+                delay(700)
                 if (query.length > 2) {
                     onSearchStarted()
                     viewModel.refreshSearch(query)
@@ -158,17 +164,56 @@ fun SearchBarMovies(
             }
     }
     Row() {
-        SearchBar(modifier = Modifier.weight(1f), expanded = expanded, inputField = {
-            TextField(value = searchQuery, onValueChange = {
-                searchQueryFlow.value = it
-            })
-        }, onExpandedChange = {}) {
-        }
-        CloseButton {
-            onClose()
-        }
+
+
+        SearchBarMoviesV2(query = searchQuery, onQueryChange = {
+            searchQueryFlow.value = it
+        }, onClose = onClose)
+//        CloseButton {
+//            onClose()
+//        }
     }
 }
+
+@Composable
+fun SearchBarMoviesV2(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    onClose: () -> Unit
+) {
+    TextField(
+        value = query,
+        onValueChange = onQueryChange,
+        leadingIcon = {
+            Icon(Icons.Default.Search, contentDescription = "Search")
+        },
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                IconButton(onClick = {
+                    onQueryChange("")
+                    onClose()
+                }) {
+                    Icon(Icons.Default.Close, contentDescription = "Clear search")
+                }
+            }
+        },
+        placeholder = { Text("Search") },
+        shape = RoundedCornerShape(20.dp),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color(0xFFF5F5F5),
+            unfocusedContainerColor = Color(0xFFF5F5F5),
+            disabledContainerColor = Color(0xFFF5F5F5),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent
+        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .shadow(8.dp, RoundedCornerShape(20.dp))
+    )
+}
+
 
 
 
