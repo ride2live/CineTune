@@ -67,13 +67,19 @@ class MovieSelectorViewModel @Inject constructor(
 
     }
 
-    fun addFavoriteMovie(movieKnpUi: MovieKnpUi) {
+    fun rateMovie(movieKnpUi: MovieKnpUi, dragType: DragType) {
+        when(dragType){
+            DragType.LIKE -> {
+            }
+
+            DragType.DISLIKE -> {
+
+            }
+        }
         favoriteMovies.value += movieKnpUi
     }
 
-    fun addDislikedMovie(movieKnpUi: MovieKnpUi) {
-        dislikedMovies.value += movieKnpUi
-    }
+
 
 }
 
