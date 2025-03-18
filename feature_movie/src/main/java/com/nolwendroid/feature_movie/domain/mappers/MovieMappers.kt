@@ -9,17 +9,6 @@ import com.nolwendroid.feature_movie.domain.model.MovieKnpDomain
 import com.nolwendroid.feature_movie.ui.model.MovieUi
 
 //No need to use Mapper class - no Di or Context needed
-fun MovieDTO.toDomain(): MovieDomain {
-    return MovieDomain(
-        id = id,
-        title = title,
-        overview = overview,
-        posterUrl = "https://image.tmdb.org/t/p/w500/$posterPath",
-        releaseDate = releaseDate ?: "Неизвестно",
-        rating = voteAverage
-    )
-}
-
 // Domain to UI
 fun MovieDomain.toUi(): MovieUi {
     return MovieUi(
@@ -38,7 +27,9 @@ fun MovieKnpDomain.toUi(): MovieKnpUi {
         title = "$title (${year})",
         rating = rating?.toString() ?: "N/A",
         year = year.toString(),
-        posterUrl = posterUrl
+        posterUrl = posterUrl,
+
+
     )
 }
 //Todo fix genres

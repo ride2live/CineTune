@@ -7,7 +7,6 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import com.nolwendroid.core.model.MovieKnpUi
 import com.nolwendroid.feature_movie.domain.usecase.GetPopularMoviesKnpUseCase
-import com.nolwendroid.feature_movie.domain.usecase.GetPopularMoviesUseCase
 import com.nolwendroid.feature_movie.domain.usecase.SearchMoviesKnpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +19,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieSelectorViewModel @Inject constructor(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getPopularMoviesKnpUseCase: GetPopularMoviesKnpUseCase,
     private val searchMoviesKnpUseCase: SearchMoviesKnpUseCase,
 ) : ViewModel() {

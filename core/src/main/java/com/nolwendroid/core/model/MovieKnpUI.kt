@@ -5,5 +5,13 @@ data class MovieKnpUi(
     val title: String,
     val rating: String,
     val year: String,
-    val posterUrl: String?
+    val posterUrl: String?,
+    val isSelected: Boolean = false,
+    val selectedType : SelectedType = SelectedType.NONE
 )
+
+enum class SelectedType {
+    FAVORITE,
+    DISLIKED,
+    NONE
+}

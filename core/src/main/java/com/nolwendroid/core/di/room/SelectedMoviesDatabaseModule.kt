@@ -2,7 +2,7 @@ package com.nolwendroid.core.di.room
 
 import android.content.Context
 import androidx.room.Room
-import com.nolwendroid.core.data.room.FavoritesDataBase
+import com.nolwendroid.core.data.room.CineTuneDataBase
 import com.nolwendroid.core.data.room.movies.MovieDao
 import dagger.Module
 import dagger.Provides
@@ -13,19 +13,19 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FavoritesDatabaseModule {
+object SelectedMoviesDatabaseModule {
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): FavoritesDataBase {
+    fun provideDatabase(@ApplicationContext context: Context): CineTuneDataBase {
         return Room.databaseBuilder(
             context,
-            FavoritesDataBase::class.java,
+            CineTuneDataBase::class.java,
             "movies.db"
         ).build()
     }
 
     @Provides
-    fun provideMovieDao(database: FavoritesDataBase): MovieDao {
+    fun provideMovieDao(database: CineTuneDataBase): MovieDao {
         return database.movieDao()
     }
 }
