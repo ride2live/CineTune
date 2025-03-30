@@ -1,9 +1,7 @@
 package com.nolwendroid.feature_movie.data.repository
 
 import androidx.paging.PagingSource
-import com.nolwendroid.core.di.network.ResultState
-import com.nolwendroid.feature_movie.domain.model.MovieKnpDomain
-import kotlinx.coroutines.flow.Flow
+import com.nolwendroid.core.domain.model.MovieKnpDomain
 
 interface MovieKnpRepository {
     fun getPopularMovies(): PagingSource<Int, MovieKnpDomain>

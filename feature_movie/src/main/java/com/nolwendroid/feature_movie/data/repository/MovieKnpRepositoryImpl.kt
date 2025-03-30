@@ -7,7 +7,7 @@ import com.nolwendroid.core.data.room.movies.MovieEntity
 import com.nolwendroid.core.di.network.RequestWrapper
 import com.nolwendroid.feature_movie.api.KinopoiskApiService
 import com.nolwendroid.feature_movie.domain.mappers.toDomain
-import com.nolwendroid.feature_movie.domain.model.MovieKnpDomain
+import com.nolwendroid.core.domain.model.MovieKnpDomain
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -75,6 +75,9 @@ class MovieKnpRepositoryImpl @Inject constructor(
     // Добавить фильм в избранное
     suspend fun addMovie(movie: MovieEntity) {
         movieDao.addMovie(movie)
+    }
+    suspend fun addMovies(movie: List<MovieEntity>) {
+        movieDao.addMovieList(movie)
     }
 
     // Удалить фильм из избранного

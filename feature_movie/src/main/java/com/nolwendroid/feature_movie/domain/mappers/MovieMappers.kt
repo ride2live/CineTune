@@ -1,11 +1,12 @@
 package com.nolwendroid.feature_movie.domain.mappers
 
+import com.nolwendroid.core.data.room.movies.MovieEntity
 import com.nolwendroid.core.model.MovieKnpUi
-import com.nolwendroid.feature_movie.data.model.MovieDTO
+import com.nolwendroid.core.model.SelectedType
 import com.nolwendroid.feature_movie.data.model.MovieKnpDto
 import com.nolwendroid.feature_movie.data.model.MovieSearchKnpDto
 import com.nolwendroid.feature_movie.domain.model.MovieDomain
-import com.nolwendroid.feature_movie.domain.model.MovieKnpDomain
+import com.nolwendroid.core.domain.model.MovieKnpDomain
 import com.nolwendroid.feature_movie.ui.model.MovieUi
 
 //No need to use Mapper class - no Di or Context needed
@@ -28,12 +29,20 @@ fun MovieKnpDomain.toUi(): MovieKnpUi {
         rating = rating?.toString() ?: "N/A",
         year = year.toString(),
         posterUrl = posterUrl,
+        )
+}
 
-
+fun MovieKnpUi.toDomain(): MovieKnpDomain {
+    return MovieKnpDomain(
+        id = id,
+        title = title.substringBeforeLast(" (${year})"), // Убираем год из названия
+        rating = rating.takeIf { it != "N/A" }?.toDoubleOrNull().toString(),
+        year = (year.toIntOrNull() ?: 0).toString(), // Если парсинг не удался, подставляем 0
+        posterUrl = posterUrl,
+        selectedType = selectedType
     )
 }
 //Todo fix genres
-
 fun MovieKnpDto.toDomain(): MovieKnpDomain {
     return MovieKnpDomain(
         id = filmId,

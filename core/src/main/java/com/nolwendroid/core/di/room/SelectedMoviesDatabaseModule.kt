@@ -2,6 +2,8 @@ package com.nolwendroid.core.di.room
 
 import android.content.Context
 import androidx.room.Room
+import com.nolwendroid.core.data.repository.MovieLocalRepository
+import com.nolwendroid.core.data.repository.MovieLocalRepositoryImpl
 import com.nolwendroid.core.data.room.CineTuneDataBase
 import com.nolwendroid.core.data.room.movies.MovieDao
 import dagger.Module
@@ -27,5 +29,9 @@ object SelectedMoviesDatabaseModule {
     @Provides
     fun provideMovieDao(database: CineTuneDataBase): MovieDao {
         return database.movieDao()
+    }
+    @Provides
+    fun provideMovieLocalRepository(movieDao: MovieDao): MovieLocalRepository {
+        return MovieLocalRepositoryImpl(movieDao)
     }
 }

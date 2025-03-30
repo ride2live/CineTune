@@ -7,7 +7,7 @@ data class MovieKnpUi(
     val year: String,
     val posterUrl: String?,
     val isSelected: Boolean = false,
-    val selectedType : SelectedType = SelectedType.NONE
+    var selectedType : SelectedType = SelectedType.NONE
 )
 
 enum class SelectedType {
