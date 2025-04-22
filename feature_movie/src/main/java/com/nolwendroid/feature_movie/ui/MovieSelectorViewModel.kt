@@ -82,14 +82,17 @@ class MovieSelectorViewModel @Inject constructor(
                 SelectedType.DISLIKED
             }
         }
-        favoriteMovies.value += movieKnpUi
+
         movieKnpUi.selectedType = newSelectedType
         viewModelScope.launch {
             addSelectedMovieUseCase(movieKnpUi.toDomain())
-            getSelectedMoviesUseCase().collect{
-                println(it)
+            getSelectedMoviesUseCase().collect{ movieEntities ->
+                movieEntities.forEach {
+                    println(it)
+                }
             }
         }
+        favoriteMovies.value += movieKnpUi
 
     }
 }
